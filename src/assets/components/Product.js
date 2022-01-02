@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
+import Toppings from "./Toppings";
 
 const StyledProduct = styled.div`
    {
@@ -19,7 +20,7 @@ const StyledProduct = styled.div`
   }
 `;
 
-const Product = ({ addItem, text, desc, img }) => {
+const Product = ({ addItem, text, desc, img, hasToppings }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const showModal = () => {

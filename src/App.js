@@ -6,6 +6,8 @@ import CartSidebar from "./assets/components/CartSidebar";
 import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
+import Toppings from "./assets/components/Toppings";
+import FoodData from "./assets/data/FoodData";
 
 const Container = styled.div`
    {
@@ -61,13 +63,6 @@ const StyledProduct = styled(Product)`
   }
 `;
 
-const SideBar = styled.div`
-  background: #f1f3f5;
-  grid-area: sidebar;
-  grid-column: span 1;
-  border: 1px solid #adb5bd;
-`;
-
 const App = () => {
   const [list, setList] = useState([]);
 
@@ -86,35 +81,25 @@ const App = () => {
     setList(newOrder);
   };
 
+  const editItem = (index) => {};
+
   return (
     <Container>
       <Header>Will's Food Restaurant</Header>
       <ProductBox>
-        <StyledProduct
-          text="Apple"
-          addItem={addItem}
-          desc="A delicious red apple"
-        />
-        <StyledProduct
-          text="Pepperoni Pizza"
-          addItem={addItem}
-          desc="Pepperoni, Fresh Mozzarella, Marinara Sauce"
-        />
-        <StyledProduct
-          text="Diamond"
-          addItem={addItem}
-          desc="A glimmering diamond that shines in the sunlight"
-        />
-        <StyledProduct text="Ladder" addItem={addItem} />
-        <StyledProduct text="Ladder" addItem={addItem} />
-        <StyledProduct text="Ladder" addItem={addItem} />
-        <StyledProduct text="Ladder" addItem={addItem} />
-        <StyledProduct text="Ladder" addItem={addItem} />
-        <StyledProduct text="Ladder" addItem={addItem} />
+        {Object.values(FoodData).map((key) => {
+          return (
+            <StyledProduct
+              text={key.name}
+              addItem={addItem}
+              desc={key.options}
+              hasToppings={false}
+            />
+          );
+        })}
+        ;
       </ProductBox>
-      <SideBar>
-        <CartSidebar cartSidebar={list} />
-      </SideBar>
+      <CartSidebar list={list} removeItem={removeItem} />
       <Footer>Hello World!</Footer>
     </Container>
   );

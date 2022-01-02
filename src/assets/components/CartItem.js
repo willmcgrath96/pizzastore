@@ -15,9 +15,9 @@ const StyledDesc = styled.div`
   }
 `;
 
-const CartItem = ({ cartitem, removeItem }) => {
+const CartItem = ({ cartitem }) => {
   return (
-    <StyledItem
+    <div
       id={cartitem.id}
       key={cartitem.id + cartitem.task}
       name="cartitem"
@@ -26,7 +26,7 @@ const CartItem = ({ cartitem, removeItem }) => {
       {cartitem.task}
       <br />
       <StyledDesc>{cartitem.sub}</StyledDesc>
-    </StyledItem>
+    </div>
   );
 };
 
