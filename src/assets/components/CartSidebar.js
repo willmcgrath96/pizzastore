@@ -8,6 +8,7 @@ const SideBar = styled.div`
   grid-area: sidebar;
   grid-column: span 1;
   border: 1px solid #adb5bd;
+  overflow: scroll;
 `;
 
 const ItemContainer = styled.div`
@@ -24,7 +25,7 @@ const StyledButton = styled.button`
   }
 `;
 
-const CartSidebar = ({ list, removeItem }) => {
+const CartSidebar = ({ list, removeItem, price }) => {
   return (
     <SideBar>
       <h1>Your Order</h1>
@@ -42,6 +43,7 @@ const CartSidebar = ({ list, removeItem }) => {
           </ItemContainer>
         );
       })}
+      <div>{price}</div>
     </SideBar>
   );
 };

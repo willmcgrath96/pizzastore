@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import Toppings from "./assets/components/Toppings";
 import FoodData from "./assets/data/FoodData";
+import Checkbox from "./assets/components/Checkbox";
 
 const Container = styled.div`
    {
@@ -65,13 +66,21 @@ const StyledProduct = styled(Product)`
 
 const App = () => {
   const [list, setList] = useState([]);
+  const [itemPrice, setItemPrice] = useState(0);
 
-  const addItem = (item, desc) => {
+  const addItem = (item, desc, price) => {
     let copy = [...list];
     copy = [
       ...copy,
-      { id: list.length + 1, task: item, sub: desc, complete: false },
+      {
+        id: list.length + 1,
+        task: item,
+        sub: desc,
+        cost: price,
+        complete: false,
+      },
     ];
+    setItemPrice(price);
     setList(copy);
   };
 
@@ -90,16 +99,18 @@ const App = () => {
         {Object.values(FoodData).map((key) => {
           return (
             <StyledProduct
+              key={key.id}
               text={key.name}
               addItem={addItem}
               desc={key.options}
               hasToppings={false}
+              price={key.price}
             />
           );
         })}
         ;
       </ProductBox>
-      <CartSidebar list={list} removeItem={removeItem} />
+      <CartSidebar list={list} removeItem={removeItem} price={itemPrice} />
       <Footer>Hello World!</Footer>
     </Container>
   );

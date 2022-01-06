@@ -26,6 +26,7 @@ const CartItem = ({ cartitem }) => {
       {cartitem.task}
       <br />
       <StyledDesc>{cartitem.sub}</StyledDesc>
+      {cartitem.cost}
     </div>
   );
 };
