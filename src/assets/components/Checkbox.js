@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import FoodData from "../data/FoodData";
 
-const Checkbox = ({ toppings, onChange }) => {
+const Checkbox = ({ toppings, onChange, price }) => {
   const [data, setData] = useState([{ toppings }]);
 
   const [total, setTotal] = useState(0);
@@ -25,7 +25,6 @@ const Checkbox = ({ toppings, onChange }) => {
 
   return (
     <div>
-      <h3>Select Toppings</h3>
       <ul>
         {toppings.map((item) => {
           return (

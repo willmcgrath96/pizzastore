@@ -9,6 +9,8 @@ const SideBar = styled.div`
   grid-column: span 1;
   border: 1px solid #adb5bd;
   overflow: scroll;
+  display: flex;
+  flex-direction: column;
 `;
 
 const ItemContainer = styled.div`
@@ -22,6 +24,13 @@ const StyledButton = styled.button`
     border: none;
     text-decoration: underline;
     color: #343a40;
+  }
+`;
+
+const StyledPrice = styled.div`
+   {
+    margin-top: auto;
+    padding: 10px 0px 10px 0px;
   }
 `;
 
@@ -43,7 +52,7 @@ const CartSidebar = ({ list, removeItem, price }) => {
           </ItemContainer>
         );
       })}
-      <div>{price}</div>
+      <StyledPrice>Your Total: {price}</StyledPrice>
     </SideBar>
   );
 };

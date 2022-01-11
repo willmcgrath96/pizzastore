@@ -6,11 +6,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import Toppings from "./Toppings";
 import Checkbox from "./Checkbox";
+import Card from "react-bootstrap/Card";
+import { Button } from "react-bootstrap";
 
 const StyledProduct = styled.div`
    {
-    background-color: #032123;
+    background-color: #fff;
     grid-gap: 0.25rem;
+    border: 2px solid black;
     width: 25%;
     height: 150px;
     grid-area: product;
@@ -21,11 +24,41 @@ const StyledProduct = styled.div`
   }
 `;
 
+const StyledCard = styled.div`
+   {
+    hover: {
+      border: 2px solid black;
+    }
+  }
+`;
+
+const StyledImage = styled(Card.Img)`
+   {
+    width: 18rem;
+    height: 100px;
+    object-fit: cover;
+  }
+`;
+
+const ModalImage = styled.img`
+   {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    padding: 10px;
+  }
+`;
+
 const Product = ({ addItem, text, desc, price, img, hasToppings }) => {
   const descValues = Object.values(desc);
 
   const [isOpen, setIsOpen] = useState(false);
   const [toppings, setToppings] = useState(descValues);
+
+  var formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
 
   const showModal = () => {
     setIsOpen(true);
@@ -42,25 +75,39 @@ const Product = ({ addItem, text, desc, price, img, hasToppings }) => {
     hideModal();
   };
 
+  var toppingCheck = descValues.length >= 1 ? "Select Toppings" : "";
+
   return (
-    <StyledProduct>
+    <Card
+      onClick={showModal}
+      style={{ width: "18rem" }}
+      style={{ cursor: "pointer" }}
+    >
+      <StyledImage variant="top" src={img} />
+      <Card.Title>{text}</Card.Title>
+      <Card.Subtitle>{desc}</Card.Subtitle>
+      <br />
+      <Card.Subtitle>{formatter.format(price)}</Card.Subtitle>
       <>
-        <button onClick={showModal}>{text}</button>
-        <Modal show={isOpen} onHide={hideModal}>
-          <Modal.Header>
-            <Modal.Title>{text}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Checkbox toppings={descValues} price={price} />
-            <h2>{price}</h2>
-          </Modal.Body>
-          <Modal.Footer>
-            <button onClick={hideModal}>Cancel</button>
-            <button onClick={handleAndHide}>Save</button>
-          </Modal.Footer>
-        </Modal>
+        <div onClick={(e) => e.stopPropagation()}>
+          <Modal show={isOpen} onHide={hideModal}>
+            <Modal.Header>
+              <Modal.Title>{text}</Modal.Title>
+            </Modal.Header>
+            <ModalImage src={img} />
+            <Modal.Body>
+              <h3>{toppingCheck}</h3>
+              <Checkbox toppings={descValues} price={price} />
+              <h2>{formatter.format(price)}</h2>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onClick={hideModal}>Cancel</Button>
+              <Button onClick={handleAndHide}>Save</Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
       </>
-    </StyledProduct>
+    </Card>
   );
 };
 

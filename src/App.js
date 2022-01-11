@@ -66,10 +66,21 @@ const StyledProduct = styled(Product)`
 
 const App = () => {
   const [list, setList] = useState([]);
-  const [itemPrice, setItemPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState([]);
+
+  let sum = 0;
+  let copy = [...list];
+
+  var formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
+  for (let i = 0; i < totalPrice.length; i++) {
+    sum += totalPrice[i];
+  }
 
   const addItem = (item, desc, price) => {
-    let copy = [...list];
     copy = [
       ...copy,
       {
@@ -80,14 +91,18 @@ const App = () => {
         complete: false,
       },
     ];
-    setItemPrice(price);
+    setTotalPrice((totalPrice) => [...totalPrice, price]);
     setList(copy);
   };
 
   const removeItem = (index) => {
     const newOrder = [...list];
+    const newPrice = [...totalPrice];
     newOrder.splice(index, 1);
+    newPrice.splice(index, 1);
     setList(newOrder);
+    setTotalPrice(newPrice);
+    sum -= newPrice(index);
   };
 
   const editItem = (index) => {};
@@ -105,12 +120,17 @@ const App = () => {
               desc={key.options}
               hasToppings={false}
               price={key.price}
+              img={key.img}
             />
           );
         })}
         ;
       </ProductBox>
-      <CartSidebar list={list} removeItem={removeItem} price={itemPrice} />
+      <CartSidebar
+        list={list}
+        removeItem={removeItem}
+        price={formatter.format(sum)}
+      />
       <Footer>Hello World!</Footer>
     </Container>
   );

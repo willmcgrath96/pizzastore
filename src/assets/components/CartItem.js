@@ -15,6 +15,11 @@ const StyledDesc = styled.div`
   }
 `;
 
+var formatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
+
 const CartItem = ({ cartitem }) => {
   return (
     <div
@@ -26,7 +31,7 @@ const CartItem = ({ cartitem }) => {
       {cartitem.task}
       <br />
       <StyledDesc>{cartitem.sub}</StyledDesc>
-      {cartitem.cost}
+      {formatter.format(cartitem.cost)}
     </div>
   );
 };
