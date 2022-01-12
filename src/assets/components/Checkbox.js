@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import FoodData from "../data/FoodData";
 
-const Checkbox = ({ toppings, onChange, price }) => {
+const Checkbox = ({ toppings, noToppingList, setNoToppingList, price }) => {
   const [data, setData] = useState([{ toppings }]);
 
   const [total, setTotal] = useState(0);
@@ -11,16 +11,30 @@ const Checkbox = ({ toppings, onChange, price }) => {
 
   const foodArray = [...toppings];
 
-  onChange = (e) => {
-    const isChecked = e.target.checked;
-    if (checked) {
-      foodArray.push(e.target.value);
+  // const onChange = (e) => {
+  //   const isChecked = e.target.checked;
+  //   if (checked) {
+  //     foodArray.push(e.target.value);
+  //   } else {
+  //     const index = foodArray.indexOf(e.target.value);
+  //     foodArray.splice(index, 1);
+  //     setChecked(false);
+  //   }
+  //   console.log(foodArray);
+  // };
+
+  const change = (e) => {
+    const toppingToAdd = e.target.value.replace(", ", "");
+
+    if (noToppingList.includes(toppingToAdd)) {
+      setNoToppingList(
+        noToppingList.filter((topping) => {
+          return topping !== toppingToAdd;
+        })
+      );
     } else {
-      const index = foodArray.indexOf(e.target.value);
-      foodArray.splice(index, 1);
-      setChecked(false);
+      setNoToppingList([...noToppingList, toppingToAdd]);
     }
-    console.log(foodArray);
   };
 
   return (
@@ -33,12 +47,11 @@ const Checkbox = ({ toppings, onChange, price }) => {
                 <input
                   readOnly
                   type="checkbox"
-                  name={item}
-                  value={item}
-                  onChange={() => setChecked(!checked)}
-                  defaultChecked={checked}
+                  name={`No ${item}`}
+                  value={`No ${item}`}
+                  onChange={(e) => change(e)}
                 />
-                <label>{item}</label>
+                <label>{`No ${item.replace(", ", "")}`}</label>
               </div>
             </li>
           );

@@ -49,11 +49,19 @@ const ModalImage = styled.img`
   }
 `;
 
-const Product = ({ addItem, text, desc, price, img, hasToppings }) => {
+const Product = ({
+  addItem,
+  text,
+  desc,
+  price,
+  img,
+  hasToppings,
+  noToppingList,
+  setNoToppingList,
+}) => {
   const descValues = Object.values(desc);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [toppings, setToppings] = useState(descValues);
 
   var formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -62,6 +70,7 @@ const Product = ({ addItem, text, desc, price, img, hasToppings }) => {
 
   const showModal = () => {
     setIsOpen(true);
+    setNoToppingList([]);
   };
 
   const hideModal = () => {
@@ -70,8 +79,7 @@ const Product = ({ addItem, text, desc, price, img, hasToppings }) => {
 
   const handleAndHide = (e) => {
     e.preventDefault();
-    setToppings(descValues);
-    addItem(text, toppings, price);
+    addItem(text, noToppingList, price);
     hideModal();
   };
 
@@ -97,7 +105,12 @@ const Product = ({ addItem, text, desc, price, img, hasToppings }) => {
             <ModalImage src={img} />
             <Modal.Body>
               <h3>{toppingCheck}</h3>
-              <Checkbox toppings={descValues} price={price} />
+              <Checkbox
+                toppings={descValues}
+                price={price}
+                noToppingList={noToppingList}
+                setNoToppingList={setNoToppingList}
+              />
               <h2>{formatter.format(price)}</h2>
             </Modal.Body>
             <Modal.Footer>

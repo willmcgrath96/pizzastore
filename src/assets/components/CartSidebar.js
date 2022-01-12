@@ -34,14 +34,25 @@ const StyledPrice = styled.div`
   }
 `;
 
-const CartSidebar = ({ list, removeItem, price }) => {
+const CartSidebar = ({
+  list,
+  removeItem,
+  price,
+  noToppingList,
+  setNoToppingList,
+}) => {
   return (
     <SideBar>
       <h1>Your Order</h1>
       {list.map((cartitem, index) => {
         return (
           <ItemContainer>
-            <CartItem cartitem={cartitem} removeItem={removeItem} />
+            <CartItem
+              cartitem={cartitem}
+              noToppingList={noToppingList}
+              removeItem={removeItem}
+              setNoToppingList={setNoToppingList}
+            />
             <StyledButton
               onClick={(e) => {
                 removeItem(index);

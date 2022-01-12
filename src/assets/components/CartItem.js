@@ -7,11 +7,22 @@ const StyledItem = styled.div`
   }
 `;
 
+const StyledDiv = styled.div`
+   {
+    display: flex;
+    flex-direction: column;
+  }
+`;
+
 const StyledDesc = styled.div`
    {
-     {
-      color: #868e96;
-    }
+    color: #868e96;
+  }
+`;
+
+const StyledParagraph = styled.p`
+   {
+    line-height: normal;
   }
 `;
 
@@ -20,19 +31,22 @@ var formatter = new Intl.NumberFormat("en-US", {
   currency: "USD",
 });
 
-const CartItem = ({ cartitem }) => {
+const CartItem = ({ cartitem, noToppingList }) => {
   return (
-    <div
+    <StyledDiv
       id={cartitem.id}
       key={cartitem.id + cartitem.task}
       name="cartitem"
       value={cartitem.id}
     >
       {cartitem.task}
-      <br />
-      <StyledDesc>{cartitem.sub}</StyledDesc>
+      <StyledDesc>
+        {noToppingList.map((key) => (
+          <StyledParagraph>{key}</StyledParagraph>
+        ))}
+      </StyledDesc>
       {formatter.format(cartitem.cost)}
-    </div>
+    </StyledDiv>
   );
 };
 

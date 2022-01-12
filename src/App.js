@@ -67,6 +67,7 @@ const StyledProduct = styled(Product)`
 const App = () => {
   const [list, setList] = useState([]);
   const [totalPrice, setTotalPrice] = useState([]);
+  const [noToppingList, setNoToppingList] = useState([]);
 
   let sum = 0;
   let copy = [...list];
@@ -91,6 +92,7 @@ const App = () => {
         complete: false,
       },
     ];
+    console.log(desc);
     setTotalPrice((totalPrice) => [...totalPrice, price]);
     setList(copy);
   };
@@ -121,6 +123,8 @@ const App = () => {
               hasToppings={false}
               price={key.price}
               img={key.img}
+              noToppingList={noToppingList}
+              setNoToppingList={setNoToppingList}
             />
           );
         })}
@@ -130,6 +134,7 @@ const App = () => {
         list={list}
         removeItem={removeItem}
         price={formatter.format(sum)}
+        noToppingList={noToppingList}
       />
       <Footer>Hello World!</Footer>
     </Container>
