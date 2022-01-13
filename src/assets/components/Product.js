@@ -74,6 +74,7 @@ const Product = ({
 
   const hideModal = () => {
     setIsOpen(false);
+    setNoToppingList([]);
   };
 
   const handleAndHide = (e) => {

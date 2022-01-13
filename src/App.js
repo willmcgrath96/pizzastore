@@ -90,6 +90,7 @@ const App = () => {
         sub: desc,
         cost: price,
         complete: false,
+        noToppingList: [...noToppingList],
       },
     ];
     console.log(desc);

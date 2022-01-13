@@ -31,7 +31,7 @@ var formatter = new Intl.NumberFormat("en-US", {
   currency: "USD",
 });
 
-const CartItem = ({ cartitem, noToppingList }) => {
+const CartItem = ({ cartitem }) => {
   return (
     <StyledDiv
       id={cartitem.id}
@@ -41,7 +41,7 @@ const CartItem = ({ cartitem, noToppingList }) => {
     >
       {cartitem.task}
       <StyledDesc>
-        {noToppingList.map((key) => (
+        {cartitem.noToppingList.map((key) => (
           <StyledParagraph>{key}</StyledParagraph>
         ))}
       </StyledDesc>
