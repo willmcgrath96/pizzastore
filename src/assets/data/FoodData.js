@@ -1,33 +1,50 @@
-import React from "react";
-
 const FoodData = [
   {
     id: 1,
     name: "Burger",
-    options: ["Pickle, ", "Onion, ", "Lettuce, ", "Ketchup, ", "Bacon"],
+    options: [
+      "Pickle, ",
+      "Onion, ",
+      "Lettuce, ",
+      "Ketchup, ",
+      "Bacon, ",
+      "Tomato",
+    ],
+    choices: [],
     price: 7.5,
     img: "/img/cheeseburger.jpg",
+    section: "Entrees",
+    hasToppings: true,
   },
   {
     id: 2,
     name: "Pizza",
     options: ["Sausage, ", "Pepperoni, ", "Olives"],
+    choices: [],
     price: 10.5,
     img: "/img/pizza.jpg",
+    section: "Entrees",
+    hasToppings: true,
   },
   {
     id: 3,
     name: "Pancakes",
     options: ["Butter, ", "Maple Syrup, ", "Blueberry Syrup"],
+    choices: [],
     price: 6.5,
     img: "/img/pancakes.jpg",
+    section: "Entrees",
+    hasToppings: true,
   },
   {
     id: 4,
     name: "Cobb Salad",
     options: ["Bacon, ", "Lettuce, ", "Blue Cheese"],
+    choices: [],
     price: 3.5,
     img: "/img/cobb-salad-18.jpg",
+    section: "Entrees",
+    hasToppings: true,
   },
 ];
 

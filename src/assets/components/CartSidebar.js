@@ -2,15 +2,20 @@ import react from "react";
 import { useState } from "react";
 import CartItem from "./CartItem";
 import styled from "styled-components";
+import { Button } from "react-bootstrap";
+import TakeMoney from "./TakeMoney";
 
 const SideBar = styled.div`
   background: #f1f3f5;
   grid-area: sidebar;
   grid-column: span 1;
   border: 1px solid #adb5bd;
-  overflow: scroll;
+  overflow: auto;
   display: flex;
   flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 90vh;
 `;
 
 const ItemContainer = styled.div`
@@ -40,6 +45,8 @@ const CartSidebar = ({
   price,
   noToppingList,
   setNoToppingList,
+  editItem,
+  sum,
 }) => {
   return (
     <SideBar>
@@ -64,6 +71,7 @@ const CartSidebar = ({
         );
       })}
       <StyledPrice>Your Total: {price}</StyledPrice>
+      <TakeMoney sum={sum} />
     </SideBar>
   );
 };

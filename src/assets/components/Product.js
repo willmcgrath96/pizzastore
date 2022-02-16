@@ -8,6 +8,10 @@ import Toppings from "./Toppings";
 import Checkbox from "./Checkbox";
 import Card from "react-bootstrap/Card";
 import { Button } from "react-bootstrap";
+import Radio from "./Radio";
+import IncrementButton from "./IncrementButton";
+import DecrementButton from "./DecrementButton";
+import QuantDisplay from "./QuantDisplay";
 
 const StyledProduct = styled.div`
    {
@@ -24,10 +28,32 @@ const StyledProduct = styled.div`
   }
 `;
 
-const StyledCard = styled.div`
+const StyledParagraph = styled.p`
    {
-    hover: {
-      border: 2px solid black;
+    display: inline-block;
+    width: 200px;
+  }
+`;
+
+const StyledButton = styled(Button)`
+   {
+    background-color: #495057;
+    width: 125px;
+    border-color: #495057;
+    &:hover {
+      background-color: #adb5bd;
+      border-color: #adb5bd;
+    }
+  }
+`;
+
+const StyledCard = styled(Card)`
+   {
+    cursor: pointer;
+    height: 13rem;
+    transition: transform 250ms;
+    &:hover {
+      transform: translateY(-10px);
     }
   }
 `;
@@ -49,6 +75,19 @@ const ModalImage = styled.img`
   }
 `;
 
+const StyledPrice = styled.p`
+   {
+    margin-bottom: 15px;
+  }
+`;
+
+const StyledFooter = styled(Modal.Footer)`
+   {
+    display: flex;
+    justify-content: flex-start;
+  }
+`;
+
 const Product = ({
   addItem,
   text,
@@ -58,10 +97,23 @@ const Product = ({
   hasToppings,
   noToppingList,
   setNoToppingList,
+  choices,
+  counter,
+  setCounter,
+  index,
 }) => {
-  const descValues = Object.values(desc);
-
   const [isOpen, setIsOpen] = useState(false);
+  const descValues = Object.values(desc);
+  const [selectedChoice, setSelectedChoice] = useState();
+
+  const incrementCounter = () => setCounter(counter + 1);
+  let decrementCounter = () => setCounter(counter - 1);
+
+  if (counter <= 1) {
+    decrementCounter = () => setCounter(1);
+  }
+
+  let itemPrice = price * counter;
 
   var formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -75,27 +127,24 @@ const Product = ({
   const hideModal = () => {
     setIsOpen(false);
     setNoToppingList([]);
+    setCounter(1);
   };
 
   const handleAndHide = (e) => {
     e.preventDefault();
-    addItem(text, noToppingList, price);
+    addItem(text, noToppingList, itemPrice, selectedChoice, counter);
     hideModal();
   };
 
-  var toppingCheck = descValues.length >= 1 ? "Select Toppings" : "";
-
   return (
-    <Card
-      onClick={showModal}
-      style={{ width: "18rem" }}
-      style={{ cursor: "pointer" }}
-    >
+    <StyledCard onClick={showModal}>
       <StyledImage variant="top" src={img} />
       <Card.Title>{text}</Card.Title>
-      <Card.Subtitle>{desc}</Card.Subtitle>
-      <br />
-      <Card.Subtitle>{formatter.format(price)}</Card.Subtitle>
+      <Card.Subtitle>
+        <StyledParagraph>{desc}</StyledParagraph>
+      </Card.Subtitle>
+      <Card.Subtitle>{choices}</Card.Subtitle>
+      <StyledPrice>{formatter.format(price)}</StyledPrice>
       <>
         <div onClick={(e) => e.stopPropagation()}>
           <Modal show={isOpen} onHide={hideModal}>
@@ -104,23 +153,31 @@ const Product = ({
             </Modal.Header>
             <ModalImage src={img} />
             <Modal.Body>
-              <h3>{toppingCheck}</h3>
               <Checkbox
                 toppings={descValues}
                 price={price}
                 noToppingList={noToppingList}
                 setNoToppingList={setNoToppingList}
               />
-              <h2>{formatter.format(price)}</h2>
+              <Radio
+                choices={choices}
+                selectedChoice={selectedChoice}
+                setSelectedChoice={setSelectedChoice}
+              />
+              <h2>{formatter.format(itemPrice)}</h2>
             </Modal.Body>
-            <Modal.Footer>
-              <Button onClick={hideModal}>Cancel</Button>
-              <Button onClick={handleAndHide}>Save</Button>
-            </Modal.Footer>
+            <StyledFooter>
+              <h3>Quantity</h3>
+              <DecrementButton onClick={decrementCounter} />
+              <QuantDisplay message={counter} />
+              <IncrementButton onClick={incrementCounter} />
+              <StyledButton onClick={hideModal}>Cancel</StyledButton>
+              <StyledButton onClick={handleAndHide}>Save</StyledButton>
+            </StyledFooter>
           </Modal>
         </div>
       </>
-    </Card>
+    </StyledCard>
   );
 };
 

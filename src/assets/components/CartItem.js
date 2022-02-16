@@ -26,6 +26,12 @@ const StyledParagraph = styled.p`
   }
 `;
 
+const StyledPrice = styled.p`
+   {
+    justify-content: right;
+  }
+`;
+
 var formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -39,13 +45,16 @@ const CartItem = ({ cartitem }) => {
       name="cartitem"
       value={cartitem.id}
     >
+      {cartitem.quantity}
+      <br />
       {cartitem.task}
       <StyledDesc>
         {cartitem.noToppingList.map((key) => (
           <StyledParagraph>{key}</StyledParagraph>
         ))}
+        {cartitem.pick}
       </StyledDesc>
-      {formatter.format(cartitem.cost)}
+      <StyledPrice>{formatter.format(cartitem.cost)}</StyledPrice>
     </StyledDiv>
   );
 };
