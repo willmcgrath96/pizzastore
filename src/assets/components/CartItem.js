@@ -3,20 +3,27 @@ import styled from "styled-components";
 
 const StyledItem = styled.div`
    {
-    border: 2px solid #dee2e6;
+    width: 75px;
   }
 `;
 
 const StyledDiv = styled.div`
    {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    &:hover {
+      background-color: #adb5bd;
+      border-color: #adb5bd;
+    }
   }
 `;
 
 const StyledDesc = styled.div`
    {
     color: #868e96;
+    width: 1fr;
   }
 `;
 
@@ -28,7 +35,7 @@ const StyledParagraph = styled.p`
 
 const StyledPrice = styled.p`
    {
-    justify-content: right;
+    width: 1fr;
   }
 `;
 
@@ -45,9 +52,11 @@ const CartItem = ({ cartitem }) => {
       name="cartitem"
       value={cartitem.id}
     >
-      {cartitem.quantity}
-      <br />
-      {cartitem.task}
+      <StyledItem>
+        {cartitem.quantity}
+        <br />
+        {cartitem.task}
+      </StyledItem>
       <StyledDesc>
         {cartitem.noToppingList.map((key) => (
           <StyledParagraph>{key}</StyledParagraph>

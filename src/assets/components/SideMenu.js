@@ -13,7 +13,7 @@ const StyledMenu = styled(Drawer)`
   }
 `;
 
-const StyledLink = styled.a`
+const StyledButton = styled.button`
    {
     text-decoration: none;
     color: #495057;
@@ -36,20 +36,47 @@ const StyledList = styled.ul`
   }
 `;
 
-const SideMenu = () => {
+const SideMenu = ({ setShowBreak, setShowDin, setShowBevs, setShowSides }) => {
+  const toggleBreak = () => {
+    setShowBreak(true);
+    setShowDin(false);
+    setShowBevs(false);
+    setShowSides(false);
+  };
+  const toggleDin = () => {
+    setShowBreak(false);
+    setShowDin(true);
+    setShowBevs(false);
+    setShowSides(false);
+  };
+  const toggleBevs = () => {
+    setShowBreak(false);
+    setShowDin(false);
+    setShowBevs(true);
+    setShowSides(false);
+  };
+  const toggleSides = () => {
+    setShowBreak(false);
+    setShowDin(false);
+    setShowBevs(false);
+    setShowSides(true);
+  };
   return (
     <StyledMenu>
       <h3>On the Menu</h3>
       <StyledList>
-        <StyledLink href="#entrees">
-          <StyledItem>Entrees</StyledItem>
-        </StyledLink>
-        <StyledLink href="#drinks">
+        <StyledButton onClick={toggleBreak}>
+          <StyledItem>Breakfast</StyledItem>
+        </StyledButton>
+        <StyledButton onClick={toggleDin} href="#entrees">
+          <StyledItem>Dinner</StyledItem>
+        </StyledButton>
+        <StyledButton onClick={toggleBevs} href="#drinks">
           <StyledItem>Drinks</StyledItem>
-        </StyledLink>
-        <StyledLink href="#sides">
+        </StyledButton>
+        <StyledButton onClick={toggleSides} href="#sides">
           <StyledItem>Sides</StyledItem>
-        </StyledLink>
+        </StyledButton>
       </StyledList>
     </StyledMenu>
   );

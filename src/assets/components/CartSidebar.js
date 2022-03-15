@@ -32,7 +32,19 @@ const StyledButton = styled.button`
   }
 `;
 
+const StyledHeader = styled.h1`
+   {
+    font-style: italic;
+    font-family: capitana, sans-serif;
+  }
+`;
+
 const StyledPrice = styled.div`
+   {
+  }
+`;
+
+const PriceBox = styled.div`
    {
     margin-top: auto;
     padding: 10px 0px 10px 0px;
@@ -48,9 +60,16 @@ const CartSidebar = ({
   editItem,
   sum,
 }) => {
+  var formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+  const taxAmount = sum * 0.0825;
+  const totalAmount = sum + taxAmount;
+
   return (
     <SideBar>
-      <h1>Your Order</h1>
+      <StyledHeader>Your Order</StyledHeader>
       {list.map((cartitem, index) => {
         return (
           <ItemContainer>
@@ -70,8 +89,12 @@ const CartSidebar = ({
           </ItemContainer>
         );
       })}
-      <StyledPrice>Your Total: {price}</StyledPrice>
-      <TakeMoney sum={sum} />
+      <PriceBox>
+        <StyledPrice>Your Subtotal: {price}</StyledPrice>
+        <StyledPrice>Tax: {formatter.format(taxAmount)}</StyledPrice>
+        <StyledPrice>Your Total: {formatter.format(totalAmount)}</StyledPrice>
+      </PriceBox>
+      <TakeMoney sum={totalAmount} />
     </SideBar>
   );
 };

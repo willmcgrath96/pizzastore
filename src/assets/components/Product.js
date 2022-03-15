@@ -13,25 +13,13 @@ import IncrementButton from "./IncrementButton";
 import DecrementButton from "./DecrementButton";
 import QuantDisplay from "./QuantDisplay";
 
-const StyledProduct = styled.div`
-   {
-    background-color: #fff;
-    grid-gap: 0.25rem;
-    border: 2px solid black;
-    width: 25%;
-    height: 150px;
-    grid-area: product;
-    border-radius: 25px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-  }
-`;
-
 const StyledParagraph = styled.p`
    {
-    display: inline-block;
     width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
   }
 `;
 
@@ -47,6 +35,12 @@ const StyledButton = styled(Button)`
   }
 `;
 
+const StyledIngredientList = styled.p`
+   {
+    font-style: italic;
+  }
+`;
+
 const StyledCard = styled(Card)`
    {
     cursor: pointer;
@@ -55,12 +49,13 @@ const StyledCard = styled(Card)`
     &:hover {
       transform: translateY(-10px);
     }
+    width: 300px;
   }
 `;
 
 const StyledImage = styled(Card.Img)`
    {
-    width: 18rem;
+    width: 298px;
     height: 100px;
     object-fit: cover;
   }
@@ -94,13 +89,11 @@ const Product = ({
   desc,
   price,
   img,
-  hasToppings,
   noToppingList,
   setNoToppingList,
   choices,
   counter,
   setCounter,
-  index,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const descValues = Object.values(desc);
@@ -153,6 +146,7 @@ const Product = ({
             </Modal.Header>
             <ModalImage src={img} />
             <Modal.Body>
+              <StyledIngredientList>{desc}</StyledIngredientList>
               <Checkbox
                 toppings={descValues}
                 price={price}

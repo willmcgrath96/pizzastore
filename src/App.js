@@ -6,39 +6,44 @@ import CartSidebar from "./assets/components/CartSidebar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import FoodData from "./assets/data/FoodData";
-import SideMenu from "./assets/components/SideMenu";
 import DrinkData from "./assets/data/DrinkData";
 import SideData from "./assets/data/SideData";
+import BreakData from "./assets/data/BreakData";
+import LunchData from "./assets/data/LunchData";
+import HideableBreak from "./assets/components/HideableBreak";
+import { Transition } from "react-transition-group";
+import "animate.css";
+import Navbar from "react-bootstrap/Navbar";
 
 const Container = styled.div`
    {
     display: grid;
     height: 100vh;
     grid-template-columns: 20% 20% 20% 20% 20%;
-    grid-template-rows: 10% 1fr 10%;
+    grid-template-rows: auto;
     grid-template-areas:
       "nav nav nav nav nav"
-      "sidemenu entrees entrees entrees sidebar"
+      ". . productHeader . ."
       "sidemenu product product product sidebar"
-      "sidemenu product product product sidebar"
-      "sidemenu product product product sidebar"
-      "sidemenu product product product sidebar"
-      "sidemenu bevs bevs bevs sidebar"
-      "sidemenu drinks drinks drinks sidebar"
-      "sidemenu drinks drinks drinks sidebar"
-      "sidemenu drinks drinks drinks sidebar"
-      "sidemenu drinks drinks drinks sidebar"
-      "sidemenu sidesHeader sidesHeader sidesHeader sidebar"
-      "sidemenu sides sides sides sidebar"
-      "sidemenu sides sides sides sidebar"
-      "sidemenu sides sides sides sidebar"
-      "sidemenu sides sides sides sidebar"
-      "footer footer footer footer footer";
+      "sidemenu footer footer footer  sidebar"
     grid-gap: 0.25rem;
     text-align: center;
     overflow: scroll;
     scroll-behavior: smooth;
     background-color: #f9f6ee;
+    object-fit: cover; 
+    background-image: ${(props) =>
+      props.showBreak
+        ? `url('/img/breakfastdark3.png')`
+        : props.showDin
+        ? `url('/img/dinnerdark.png')`
+        : props.showSides
+        ? `url('/img/sidesdark.png')`
+        : props.showBevs
+        ? `url('/img/bevs.png')`
+        : props.showLunch
+        ? `url('/img/lunchdark.png')`
+        : null}
   }
 `;
 
@@ -46,11 +51,21 @@ const Header = styled.header`
    {
     font-size: 1.5em;
     background-color: #edeade;
-    grid-area: nav;
     height: 50px;
     text-align: left;
     padding-left: 15px;
     padding-top: 5px;
+    width: 100%;
+    height: 200px;
+    grid-column: span 5;
+    font-family: capitana, sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 120px;
+    text-align: center;
+    background-image: url("/img/dinerinteriordark.png");
+    color: #967969;
+    text-shadow: 0px 0px 7px #fee2d2;
   }
 `;
 
@@ -63,57 +78,40 @@ const ProductBox = styled.div`
     grid-area: product;
     flex-wrap: wrap;
     justify-content: flex-start;
-  }
-`;
-
-const StyledEntrees = styled.h3`
-   {
-    grid-area: entrees;
-  }
-`;
-
-const StyledBevs = styled.h3`
-   {
-    grid-area: bevs;
-  }
-`;
-
-const StyledSidesHeader = styled.h3`
-   {
-    grid-area: sidesHeader;
+    grid-column: span 4;
   }
 `;
 
 const StyledProduct = styled(Product)`
    {
-    grid-area: product;
-    display: flex;
-    width: 1fr;
-    overflow-wrap: normal;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    flex-wrap: wrap;
   }
 `;
 
-const StyledDrinks = styled.div`
+const Fade = styled.div`
+  transition: 0.5s;
+  opacity: ${({ state }) => (state === "entered" ? 1 : 0)};
+  display: ${({ state }) => (state === "exited" ? "none" : "block")};
+`;
+
+const StyledNavBarElement = styled(Navbar.Brand)`
    {
-    display: flex;
-    gap: 0.25rem;
-    padding: 0.25rem;
-    align-items: flex-start;
-    grid-area: drinks;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+    :hover {
+      cursor: pointer;
+    }
+    color: #fff !important;
   }
 `;
 
-const StyledSides = styled.div`
+const StyledNavBar = styled(Navbar)`
    {
-    display: flex;
-    gap: 0.25rem;
-    padding: 0.25rem;
-    align-items: flex-start;
-    grid-area: sides;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+    width: 100%;
+    grid-column: span 5;
+    justify-content: center;
+    gap: 250px;
+    background-color: #c4a484;
   }
 `;
 
@@ -121,8 +119,12 @@ const App = () => {
   const [list, setList] = useState([]);
   const [totalPrice, setTotalPrice] = useState([]);
   const [noToppingList, setNoToppingList] = useState([]);
-  const [hasToppings, setHasToppings] = useState(true);
   const [counter, setCounter] = useState(1);
+  const [showBreak, setShowBreak] = useState(true);
+  const [showDin, setShowDin] = useState(false);
+  const [showLunch, setShowLunch] = useState(false);
+  const [showBevs, setShowBevs] = useState(false);
+  const [showSides, setShowSides] = useState(false);
 
   let sum = 0;
   let copy = [...list];
@@ -155,6 +157,42 @@ const App = () => {
     setList(copy);
   };
 
+  const toggleBreak = () => {
+    setShowBreak(true);
+    setShowDin(false);
+    setShowBevs(false);
+    setShowSides(false);
+    setShowLunch(false);
+  };
+  const toggleDin = () => {
+    setShowBreak(false);
+    setShowDin(true);
+    setShowBevs(false);
+    setShowSides(false);
+    setShowLunch(false);
+  };
+  const toggleBevs = () => {
+    setShowBreak(false);
+    setShowDin(false);
+    setShowBevs(true);
+    setShowSides(false);
+    setShowLunch(false);
+  };
+  const toggleSides = () => {
+    setShowBreak(false);
+    setShowDin(false);
+    setShowBevs(false);
+    setShowSides(true);
+    setShowLunch(false);
+  };
+  const toggleLunch = () => {
+    setShowBreak(false);
+    setShowDin(false);
+    setShowBevs(false);
+    setShowSides(false);
+    setShowLunch(true);
+  };
+
   const removeItem = (index) => {
     const newOrder = [...list];
     const newPrice = [...totalPrice];
@@ -170,72 +208,124 @@ const App = () => {
   };
 
   return (
-    <Container>
-      <Header>Will's Food Restaurant</Header>
-      <SideMenu />
-      <StyledEntrees id="entrees">Entrees & More</StyledEntrees>
+    <Container
+      showBreak={showBreak}
+      showDin={showDin}
+      showBevs={showBevs}
+      showSides={showSides}
+      showLunch={showLunch}
+    >
+      <Header>Will's Diner</Header>
+      <StyledNavBar variant="light">
+        <StyledNavBarElement onClick={toggleBreak}>
+          Breakfast
+        </StyledNavBarElement>
+        <StyledNavBarElement onClick={toggleLunch}>Lunch</StyledNavBarElement>
+        <StyledNavBarElement onClick={toggleDin}>Dinner</StyledNavBarElement>
+        <StyledNavBarElement onClick={toggleBevs}>Drinks</StyledNavBarElement>
+        <StyledNavBarElement onClick={toggleSides}>Sides</StyledNavBarElement>
+      </StyledNavBar>
       <ProductBox>
+        {Object.values(BreakData).map((key) => {
+          if (showBreak === true)
+            return (
+              <StyledProduct
+                key={key.id}
+                text={key.name}
+                addItem={addItem}
+                desc={key.options}
+                price={key.price}
+                img={key.img}
+                noToppingList={noToppingList}
+                setNoToppingList={setNoToppingList}
+                choices={key.choices}
+                hasToppings={key.hasToppings}
+                counter={counter}
+                setCounter={setCounter}
+              />
+            );
+        })}
+
         {Object.values(FoodData).map((key) => {
-          return (
-            <StyledProduct
-              key={key.id}
-              text={key.name}
-              addItem={addItem}
-              desc={key.options}
-              price={key.price}
-              img={key.img}
-              noToppingList={noToppingList}
-              setNoToppingList={setNoToppingList}
-              choices={key.choices}
-              hasToppings={key.hasToppings}
-              counter={counter}
-              setCounter={setCounter}
-            />
-          );
+          if (showDin === true)
+            return (
+              <StyledProduct
+                key={key.id}
+                text={key.name}
+                addItem={addItem}
+                desc={key.options}
+                price={key.price}
+                img={key.img}
+                noToppingList={noToppingList}
+                setNoToppingList={setNoToppingList}
+                choices={key.choices}
+                hasToppings={key.hasToppings}
+                counter={counter}
+                setCounter={setCounter}
+              />
+            );
+        })}
+
+        {Object.values(DrinkData).map((key) => {
+          if (showBevs === true)
+            return (
+              <StyledProduct
+                key={key.id}
+                text={key.name}
+                addItem={addItem}
+                desc={key.options}
+                price={key.price}
+                img={key.img}
+                noToppingList={noToppingList}
+                setNoToppingList={setNoToppingList}
+                choices={key.choices}
+                hasToppings={key.hasToppings}
+                counter={counter}
+                setCounter={setCounter}
+              />
+            );
+        })}
+
+        {Object.values(SideData).map((key) => {
+          if (showSides === true)
+            return (
+              <StyledProduct
+                key={key.id}
+                text={key.name}
+                addItem={addItem}
+                desc={key.options}
+                price={key.price}
+                img={key.img}
+                noToppingList={noToppingList}
+                setNoToppingList={setNoToppingList}
+                choices={key.choices}
+                hasToppings={key.hasToppings}
+                counter={counter}
+                setCounter={setCounter}
+              />
+            );
+        })}
+
+        {Object.values(LunchData).map((key) => {
+          if (showLunch === true)
+            return (
+              <StyledProduct
+                key={key.id}
+                text={key.name}
+                addItem={addItem}
+                desc={key.options}
+                price={key.price}
+                img={key.img}
+                noToppingList={noToppingList}
+                setNoToppingList={setNoToppingList}
+                choices={key.choices}
+                hasToppings={key.hasToppings}
+                counter={counter}
+                setCounter={setCounter}
+              />
+            );
         })}
       </ProductBox>
-      <StyledBevs>Drinks</StyledBevs>
-      <StyledDrinks id="drinks">
-        {Object.values(DrinkData).map((key) => {
-          return (
-            <StyledProduct
-              key={key.id}
-              text={key.name}
-              addItem={addItem}
-              desc={key.options}
-              price={key.price}
-              img={key.img}
-              noToppingList={noToppingList}
-              setNoToppingList={setNoToppingList}
-              choices={key.choices}
-              hasToppings={key.hasToppings}
-              counter={counter}
-              setCounter={setCounter}
-            />
-          );
-        })}
-      </StyledDrinks>
-      <StyledSidesHeader id="sides">Sides</StyledSidesHeader>
-      <StyledSides>
-        {Object.values(SideData).map((key) => {
-          return (
-            <StyledProduct
-              key={key.id}
-              text={key.name}
-              addItem={addItem}
-              desc={key.options}
-              price={key.price}
-              img={key.img}
-              noToppingList={noToppingList}
-              setNoToppingList={setNoToppingList}
-              choices={key.choices}
-              hasToppings={key.hasToppings}
-              counter={counter}
-              setCounter={setCounter}
-            />
-          );
-        })}
-      </StyledSides>
       <CartSidebar
         list={list}
         removeItem={removeItem}
